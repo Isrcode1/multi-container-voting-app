@@ -2,12 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY vote/requirements.txt .
+COPY flask-frontend/requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-COPY vote/ .
-
-EXPOSE 5000
+COPY flask-frontend/ .
 
 CMD ["python", "app.py"]
