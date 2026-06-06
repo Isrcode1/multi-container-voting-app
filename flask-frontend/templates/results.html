@@ -1,52 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-    <title>Voting Results</title>
-    <link rel="stylesheet" href="/static/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nigerian Food Battle: Results</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "gbegiri-orange": "#E86A1F",
+        "afang-green": "#004D25",
+        "palm-oil-gold": "#FFC107",
+        "amala-brown": "#4E3629",
+        "primary": "#004d27",
+        "primary-container": "#006837",
+        "secondary": "#a04100",
+        "surface": "#fbf9f4",
+        "surface-container": "#f0eee9",
+        "surface-container-low": "#f5f3ee",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-high": "#eae8e3",
+        "surface-container-highest": "#e4e2dd",
+        "on-surface": "#1b1c19",
+        "on-surface-variant": "#3f4940",
+        "outline-variant": "#bec9be",
+        "background": "#fbf9f4",
+        "on-primary": "#ffffff",
+        "on-primary-container": "#8ee4a6",
+      },
+      fontFamily: {
+        "display-lg": ["Montserrat"],
+        "headline-lg": ["Montserrat"],
+        "headline-md": ["Montserrat"],
+        "body-lg": ["Hanken Grotesk"],
+        "body-md": ["Hanken Grotesk"],
+        "label-md": ["Hanken Grotesk"],
+        "label-sm": ["Hanken Grotesk"],
+      },
+      fontSize: {
+        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .vote-momentum-bar {
+    background: linear-gradient(45deg, rgba(0,77,39,0.1) 25%, transparent 25%, transparent 50%, rgba(0,77,39,0.1) 50%, rgba(0,77,39,0.1) 75%, transparent 75%, transparent);
+    background-size: 40px 40px;
+    animation: move-stripes 2s linear infinite;
+  }
+  @keyframes move-stripes {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 0; }
+  }
+  .adire-pattern {
+    background-image: url("https://www.transparenttextures.com/patterns/batik.png");
+    opacity: 0.05;
+  }
+  @keyframes grow {
+    from { width: 0%; }
+    to { width: var(--target-width); }
+  }
+  .bar-animate {
+    animation: grow 1.5s ease-out forwards;
+  }
+</style>
 </head>
-<body>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
 
-<div class="container">
+<!-- Header -->
+<header class="bg-surface shadow-sm flex justify-between items-center w-full px-6 py-4 fixed top-0 z-50">
+  <div class="text-headline-md font-headline-md font-black text-afang-green">
+    Nigerian Food Battle
+  </div>
+  <div class="hidden md:flex items-center gap-8">
+    <nav class="flex gap-6">
+      <a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container transition-colors p-1 rounded" href="/">Battles</a>
+      <a class="text-primary font-bold font-label-md text-label-md" href="/results">Results</a>
+    </nav>
+  </div>
+  <div class="md:hidden">
+    <button class="material-symbols-outlined text-afang-green">menu</button>
+  </div>
+</header>
 
-    <h1>📊 Live Voting Results</h1>
+<main class="pt-24 px-6 max-w-[1200px] mx-auto relative overflow-hidden">
+  <div class="absolute inset-0 adire-pattern pointer-events-none"></div>
 
-    <div class="result-card">
+  <!-- Hero -->
+  <section class="text-center mb-12 relative z-10">
+    <h1 class="font-display-lg text-display-lg text-on-surface mb-2">
+      Live <span class="text-afang-green">Battle Results</span>
+    </h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">
+      The people have spoken — here's how the votes stand!
+    </p>
+  </section>
 
-        <h3>🍛 Amala & Gbegiri</h3>
+  <!-- Winner Banner -->
+  <section class="mb-10 relative z-10">
+    {% if amala_votes > afang_votes %}
+    <div class="bg-amala-brown rounded-2xl p-8 text-center text-white shadow-xl">
+      <span class="material-symbols-outlined text-palm-oil-gold text-5xl mb-2">emoji_events</span>
+      <h2 class="font-headline-lg text-headline-lg mb-1">Amala + Gbegiri is Leading! 🍛</h2>
+      <p class="font-body-lg text-body-lg opacity-90">The Yoruba Classic is dominating the battle!</p>
+    </div>
+    {% elif afang_votes > amala_votes %}
+    <div class="bg-afang-green rounded-2xl p-8 text-center text-white shadow-xl">
+      <span class="material-symbols-outlined text-palm-oil-gold text-5xl mb-2">emoji_events</span>
+      <h2 class="font-headline-lg text-headline-lg mb-1">Afang + Native Fufu is Leading! 🥬</h2>
+      <p class="font-body-lg text-body-lg opacity-90">Calabar Royalty is taking the crown!</p>
+    </div>
+    {% else %}
+    <div class="bg-surface-container rounded-2xl p-8 text-center shadow-xl">
+      <span class="material-symbols-outlined text-palm-oil-gold text-5xl mb-2">balance</span>
+      <h2 class="font-headline-lg text-headline-lg mb-1 text-on-surface">It's a Tie! ⚖️</h2>
+      <p class="font-body-lg text-body-lg text-on-surface-variant">Both meals are perfectly matched!</p>
+    </div>
+    {% endif %}
+  </section>
 
-        <p>{{ amala_votes }} votes</p>
+  <!-- Vote Stats Cards -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 relative z-10">
 
-        <div class="bar">
-            <div class="bar-fill amala-fill"
-                 style="width: {{ amala_percent }}%">
-            </div>
+    <!-- Amala Card -->
+    <div class="bg-surface-container rounded-xl overflow-hidden shadow-lg border-2 border-gbegiri-orange/30">
+      <div class="relative h-48 overflow-hidden">
+        <img alt="Amala and Gbegiri"
+             class="w-full h-full object-cover"
+             src="https://lh3.googleusercontent.com/aida/AP1WRLuKgQuLdokPNffJ5W_3EiDTSqdI34qQSecNlPl9d7H29oHb9BjiTpONitUW5UCnntxdaN7gQrg2mi54eb2AOauSxy1XHTG8hBsc-adsGUZHfHTO7iEYk4TbyGvUL2gNt3ALbhC9rJYSodso1xoiG6K9VIvqLIENLwPZe-5Cf5YFTW3s7YoKwNFHR7IUH49ZNRPiL6GXddA9vSFrHL9S0ysh1ob8Ut8k_w9l1IyW3NFVvCl3N6m4PhDm7w"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div class="absolute bottom-4 left-4">
+          <span class="bg-gbegiri-orange text-white px-3 py-1 rounded-full text-label-sm font-label-sm">Yoruba Classic</span>
+          <h3 class="font-headline-md text-headline-md text-white mt-1">Amala + Gbegiri</h3>
         </div>
-
-        <strong>{{ amala_percent }}%</strong>
-
+      </div>
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-3">
+          <span class="font-body-lg text-body-lg text-on-surface-variant">Total Votes</span>
+          <span class="font-display-lg text-4xl font-black text-gbegiri-orange">{{ amala_votes }}</span>
+        </div>
+        <div class="h-6 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full bg-gbegiri-orange vote-momentum-bar bar-animate"
+               style="--target-width: {{ amala_percent }}%; width: {{ amala_percent }}%"></div>
+        </div>
+        <div class="flex justify-between mt-2">
+          <span class="font-label-md text-label-md text-on-surface-variant">Vote Share</span>
+          <span class="font-label-md text-label-md text-gbegiri-orange font-bold">{{ amala_percent }}%</span>
+        </div>
+      </div>
     </div>
 
-    <div class="result-card">
-
-        <h3>🥬 Afang & Native Fufu</h3>
-
-        <p>{{ afang_votes }} votes</p>
-
-        <div class="bar">
-            <div class="bar-fill afang-fill"
-                 style="width: {{ afang_percent }}%">
-            </div>
+    <!-- Afang Card -->
+    <div class="bg-surface-container rounded-xl overflow-hidden shadow-lg border-2 border-afang-green/30">
+      <div class="relative h-48 overflow-hidden">
+        <img alt="Afang Soup and Fufu"
+             class="w-full h-full object-cover"
+             src="https://lh3.googleusercontent.com/aida/AP1WRLuRqf-RooCEZJBmBz97-lhRxsrpoVCpUd8pVUp_mo6rxvs2736Y4DP_cD_8nGvdR1QcrhPtMRlAGMFM15hPCFoPfOz39jsmI_uSz5jdtHoaWptZrZzlBjzyxy3RwfMBNfewfNkM0lNXaL1m32qyt3xhDdGHQLuOBUjtCEsIvDgOEYxkSZDMzlj0kzaivvIj2BR1Z3a9QOfS2-Ld70NAvrELpq_BOM1lqqM5yoeVhcoPuEAfILCgVOq2JA"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div class="absolute bottom-4 left-4">
+          <span class="bg-afang-green text-white px-3 py-1 rounded-full text-label-sm font-label-sm">Calabar Royalty</span>
+          <h3 class="font-headline-md text-headline-md text-white mt-1">Afang + Native Fufu</h3>
         </div>
-
-        <strong>{{ afang_percent }}%</strong>
-
+      </div>
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-3">
+          <span class="font-body-lg text-body-lg text-on-surface-variant">Total Votes</span>
+          <span class="font-display-lg text-4xl font-black text-afang-green">{{ afang_votes }}</span>
+        </div>
+        <div class="h-6 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full bg-afang-green bar-animate"
+               style="--target-width: {{ afang_percent }}%; width: {{ afang_percent }}%"></div>
+        </div>
+        <div class="flex justify-between mt-2">
+          <span class="font-label-md text-label-md text-on-surface-variant">Vote Share</span>
+          <span class="font-label-md text-label-md text-afang-green font-bold">{{ afang_percent }}%</span>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <a href="/" class="vote-again">
-        Vote Again
+  <!-- Total Votes Summary -->
+  <section class="bg-surface-container-low rounded-2xl p-8 mb-12 shadow-sm border border-outline-variant/20 relative z-10">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-palm-oil-gold">leaderboard</span>
+        Overall Standings
+      </h3>
+      <span class="font-label-md text-label-md text-on-surface-variant">
+        {{ amala_votes + afang_votes }} total votes
+      </span>
+    </div>
+    <div class="space-y-6">
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="font-headline-md text-body-lg text-amala-brown">Amala + Gbegiri</span>
+          <span class="font-headline-md text-body-lg text-amala-brown">{{ amala_percent }}%</span>
+        </div>
+        <div class="h-6 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full bg-gbegiri-orange vote-momentum-bar transition-all duration-1000"
+               style="width: {{ amala_percent }}%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="font-headline-md text-body-lg text-afang-green">Afang + Native Fufu</span>
+          <span class="font-headline-md text-body-lg text-afang-green">{{ afang_percent }}%</span>
+        </div>
+        <div class="h-6 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full bg-afang-green transition-all duration-1000"
+               style="width: {{ afang_percent }}%"></div>
+        </div>
+      </div>
+    </div>
+    <p class="mt-6 text-center font-body-md text-on-surface-variant italic">
+      "Whether you prefer the smooth slide of Amala or the textured riches of Afang, your voice matters in this culinary tradition."
+    </p>
+  </section>
+
+  <!-- Vote Again Button -->
+  <section class="text-center mb-12 relative z-10">
+    <a href="/"
+       class="inline-block bg-palm-oil-gold text-amala-brown font-headline-md text-headline-md px-12 py-4 rounded-xl shadow-lg hover:scale-105 active:scale-95 transition-transform">
+      ⚔️ Vote Again
     </a>
+  </section>
 
-</div>
+</main>
+
+<!-- Bottom Nav (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-surface-container-lowest shadow-[0_-4px_20px_rgba(0,0,0,0.08)] rounded-t-xl">
+  <a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="/">
+    <span class="material-symbols-outlined">swords</span>
+    <span class="text-label-sm font-label-sm">Battles</span>
+  </a>
+  <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 transition-all duration-150" href="/results">
+    <span class="material-symbols-outlined">leaderboard</span>
+    <span class="text-label-sm font-label-sm">Results</span>
+  </a>
+</nav>
 
 </body>
 </html>

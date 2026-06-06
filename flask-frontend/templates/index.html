@@ -1,64 +1,233 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-    <title>Nigerian Food Battle</title>
-    <link rel="stylesheet" href="/static/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nigerian Food Battle: The Ultimate Clash</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "gbegiri-orange": "#E86A1F",
+        "afang-green": "#004D25",
+        "palm-oil-gold": "#FFC107",
+        "amala-brown": "#4E3629",
+        "primary": "#004d27",
+        "primary-container": "#006837",
+        "secondary": "#a04100",
+        "surface": "#fbf9f4",
+        "surface-container": "#f0eee9",
+        "surface-container-low": "#f5f3ee",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-high": "#eae8e3",
+        "surface-container-highest": "#e4e2dd",
+        "on-surface": "#1b1c19",
+        "on-surface-variant": "#3f4940",
+        "outline-variant": "#bec9be",
+        "background": "#fbf9f4",
+        "on-primary": "#ffffff",
+        "on-primary-container": "#8ee4a6",
+      },
+      fontFamily: {
+        "display-lg": ["Montserrat"],
+        "headline-lg": ["Montserrat"],
+        "headline-md": ["Montserrat"],
+        "body-lg": ["Hanken Grotesk"],
+        "body-md": ["Hanken Grotesk"],
+        "label-md": ["Hanken Grotesk"],
+        "label-sm": ["Hanken Grotesk"],
+      },
+      fontSize: {
+        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+      }
+    }
+  }
+}
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .vs-divider {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 30;
+  }
+  .vote-momentum-bar {
+    background: linear-gradient(45deg, rgba(0,77,39,0.1) 25%, transparent 25%, transparent 50%, rgba(0,77,39,0.1) 50%, rgba(0,77,39,0.1) 75%, transparent 75%, transparent);
+    background-size: 40px 40px;
+    animation: move-stripes 2s linear infinite;
+  }
+  @keyframes move-stripes {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 0; }
+  }
+  .adire-pattern {
+    background-image: url("https://www.transparenttextures.com/patterns/batik.png");
+    opacity: 0.05;
+  }
+</style>
 </head>
-<body>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
 
-<div class="container">
+<header class="bg-surface shadow-sm flex justify-between items-center w-full px-6 py-4 fixed top-0 z-50">
+  <div class="text-headline-md font-headline-md font-black text-afang-green">
+    Nigerian Food Battle
+  </div>
+  <div class="hidden md:flex items-center gap-8">
+    <nav class="flex gap-6">
+      <a class="text-primary font-bold font-label-md text-label-md" href="#">Battles</a>
+      <a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container transition-colors p-1 rounded" href="/results">Results</a>
+    </nav>
+  </div>
+  <div class="md:hidden">
+    <button class="material-symbols-outlined text-afang-green">menu</button>
+  </div>
+</header>
 
-    <h1>🍲 Nigerian Food Battle</h1>
+<main class="pt-24 px-6 max-w-[1200px] mx-auto relative overflow-hidden">
+  <div class="absolute inset-0 adire-pattern pointer-events-none"></div>
 
-    <p class="subtitle">
-        Vote for your favourite meal combination
+  <section class="text-center mb-12 relative z-10">
+    <h1 class="font-display-lg text-display-lg text-on-surface mb-2">
+      Nigerian Food Battle: <span class="text-afang-green">The Ultimate Clash</span>
+    </h1>
+    <p class="font-body-lg text-body-lg text-on-surface-variant">
+      Which meal combination takes the crown? Cast your vote now!
     </p>
+  </section>
 
-    <div class="cards">
-
-        <div class="card amala">
-
-            <h2>🍛 Amala + Gbegiri</h2>
-
-            <p>
-                Rich Yoruba delicacy with smooth bean soup.
-            </p>
-
-            <form action="/vote" method="POST">
-                <input type="hidden"
-                       name="food_option"
-                       value="amala">
-
-                <button type="submit">
-                    Vote Amala
-                </button>
-            </form>
-
-        </div>
-
-        <div class="card afang">
-
-            <h2>🥬 Afang + Native Fufu</h2>
-
-            <p>
-                Delicious vegetable soup packed with flavor.
-            </p>
-
-            <form action="/vote" method="POST">
-                <input type="hidden"
-                       name="food_option"
-                       value="afang">
-
-                <button type="submit">
-                    Vote Afang
-                </button>
-            </form>
-
-        </div>
-
+  <section class="relative grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+    <div class="vs-divider hidden md:flex items-center justify-center w-16 h-16 bg-palm-oil-gold rounded-full border-4 border-background shadow-xl">
+      <span class="font-headline-md text-amala-brown font-black">VS</span>
     </div>
 
-</div>
+    <div class="battle-card group relative bg-surface-container rounded-xl overflow-hidden shadow-lg border-2 border-transparent transition-all duration-300 hover:scale-[1.02]">
+      <div class="aspect-square relative overflow-hidden">
+        <img alt="Amala and Gbegiri"
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+             src="https://lh3.googleusercontent.com/aida/AP1WRLuKgQuLdokPNffJ5W_3EiDTSqdI34qQSecNlPl9d7H29oHb9BjiTpONitUW5UCnntxdaN7gQrg2mi54eb2AOauSxy1XHTG8hBsc-adsGUZHfHTO7iEYk4TbyGvUL2gNt3ALbhC9rJYSodso1xoiG6K9VIvqLIENLwPZe-5Cf5YFTW3s7YoKwNFHR7IUH49ZNRPiL6GXddA9vSFrHL9S0ysh1ob8Ut8k_w9l1IyW3NFVvCl3N6m4PhDm7w"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+        <div class="absolute bottom-6 left-6 right-6 text-white">
+          <span class="bg-gbegiri-orange text-white px-3 py-1 rounded-full font-label-md text-label-sm mb-2 inline-block">Yoruba Classic</span>
+          <h2 class="font-headline-lg text-headline-lg mb-1">Amala + Gbegiri</h2>
+          <p class="font-body-md text-body-md opacity-90 mb-4">Rich Yoruba delicacy with smooth bean soup.</p>
+          <form action="/vote" method="POST">
+            <input type="hidden" name="food_option" value="amala">
+            <button type="submit" class="w-full bg-gbegiri-orange hover:bg-secondary text-white font-headline-md py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98]">
+              Vote Amala
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="battle-card group relative bg-surface-container rounded-xl overflow-hidden shadow-lg border-2 border-transparent transition-all duration-300 hover:scale-[1.02]">
+      <div class="aspect-square relative overflow-hidden">
+        <img alt="Afang Soup and Fufu"
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+             src="https://lh3.googleusercontent.com/aida/AP1WRLuRqf-RooCEZJBmBz97-lhRxsrpoVCpUd8pVUp_mo6rxvs2736Y4DP_cD_8nGvdR1QcrhPtMRlAGMFM15hPCFoPfOz39jsmI_uSz5jdtHoaWptZrZzlBjzyxy3RwfMBNfewfNkM0lNXaL1m32qyt3xhDdGHQLuOBUjtCEsIvDgOEYxkSZDMzlj0kzaivvIj2BR1Z3a9QOfS2-Ld70NAvrELpq_BOM1lqqM5yoeVhcoPuEAfILCgVOq2JA"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+        <div class="absolute bottom-6 left-6 right-6 text-white">
+          <span class="bg-afang-green text-white px-3 py-1 rounded-full font-label-md text-label-sm mb-2 inline-block">Calabar Royalty</span>
+          <h2 class="font-headline-lg text-headline-lg mb-1">Afang + Native Fufu</h2>
+          <p class="font-body-md text-body-md opacity-90 mb-4">Delicious vegetable soup packed with flavor.</p>
+          <form action="/vote" method="POST">
+            <input type="hidden" name="food_option" value="afang">
+            <button type="submit" class="w-full bg-afang-green hover:bg-primary-container text-white font-headline-md py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98]">
+              Vote Afang
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface-container-low rounded-2xl p-8 mb-12 shadow-sm border border-outline-variant/20">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-palm-oil-gold">leaderboard</span>
+        Current Standings
+      </h3>
+      <span class="font-label-md text-label-md text-on-surface-variant">
+        Live Updates • {{ amala_votes + afang_votes }} votes
+      </span>
+    </div>
+    <div class="space-y-6">
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="font-headline-md text-body-lg text-amala-brown">Amala + Gbegiri</span>
+          <span class="font-headline-md text-body-lg text-amala-brown">{{ amala_percent }}%</span>
+        </div>
+        <div class="h-6 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full bg-gbegiri-orange vote-momentum-bar transition-all duration-1000"
+               style="width: {{ amala_percent }}%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="font-headline-md text-body-lg text-afang-green">Afang + Native Fufu</span>
+          <span class="font-headline-md text-body-lg text-afang-green">{{ afang_percent }}%</span>
+        </div>
+        <div class="h-6 w-full bg-surface-container-highest rounded-full overflow-hidden">
+          <div class="h-full bg-afang-green transition-all duration-1000"
+               style="width: {{ afang_percent }}%"></div>
+        </div>
+      </div>
+    </div>
+    <p class="mt-6 text-center font-body-md text-on-surface-variant italic">
+      "Whether you prefer the smooth slide of Amala or the textured riches of Afang, your voice matters in this culinary tradition."
+    </p>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <span class="material-symbols-outlined text-gbegiri-orange mb-3">local_fire_department</span>
+      <h4 class="font-headline-md text-headline-md mb-2">The Heat Factor</h4>
+      <p class="text-on-surface-variant font-body-md">Discover why the Yoruba palate favors the spicy depth of Gbegiri and how it complements the fermented notes of Amala.</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <span class="material-symbols-outlined text-afang-green mb-3">eco</span>
+      <h4 class="font-headline-md text-headline-md mb-2">Nutrient Dense</h4>
+      <p class="text-on-surface-variant font-body-md">Afang soup is more than just taste; it's a powerhouse of vitamins from native wild spinach and waterleaves.</p>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+      <span class="material-symbols-outlined text-palm-oil-gold mb-3">military_tech</span>
+      <h4 class="font-headline-md text-headline-md mb-2">Legacy Battle</h4>
+      <p class="text-on-surface-variant font-body-md">A tradition spanning decades, these two meals represent the pinnacle of South-Western and South-Eastern Nigerian cuisine.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-surface-container-lowest shadow-[0_-4px_20px_rgba(0,0,0,0.08)] rounded-t-xl">
+  <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 transition-all duration-150" href="#">
+    <span class="material-symbols-outlined">swords</span>
+    <span class="text-label-sm font-label-sm">Battles</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="/results">
+    <span class="material-symbols-outlined">leaderboard</span>
+    <span class="text-label-sm font-label-sm">Results</span>
+  </a>
+</nav>
+
+<button class="fixed right-6 bottom-24 md:bottom-12 bg-palm-oil-gold text-amala-brown w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all z-40 group">
+  <span class="material-symbols-outlined">share</span>
+  <div class="absolute right-16 bg-amala-brown text-white px-3 py-1 rounded text-label-sm font-label-sm opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">Invite friends to vote</div>
+</button>
 
 </body>
 </html>

@@ -19,70 +19,53 @@ def get_connection():
     )
 
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-@app.route("/vote", methods=["POST"])
-def vote():
-    food_option = request.form["food_option"]
-
+def get_vote_data():
     conn = get_connection()
     cur = conn.cursor()
-
-    cur.execute(
-        "INSERT INTO votes (food_option) VALUES (%s)",
-        (food_option,)
-    )
-
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return redirect(url_for("results"))
-
-
-@app.route("/results")
-def results():
-
-    conn = get_connection()
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT food_option, COUNT(*)
-        FROM votes
-        GROUP BY food_option
-    """)
-
+    cur.execute("SELECT food_option, COUNT(*) FROM votes GROUP BY food_option")
     rows = cur.fetchall()
-
     cur.close()
     conn.close()
-
     amala_votes = 0
     afang_votes = 0
-
     for row in rows:
         if row[0] == "amala":
             amala_votes = row[1]
         elif row[0] == "afang":
             afang_votes = row[1]
-
     total = amala_votes + afang_votes
+    amala_percent = round((amala_votes / total) * 100, 1) if total > 0 else 0
+    afang_percent = round((afang_votes / total) * 100, 1) if total > 0 else 0
+    return amala_votes, afang_votes, amala_percent, afang_percent
 
-    amala_percent = (
-        round((amala_votes / total) * 100, 1)
-        if total > 0 else 0
+
+@app.route("/")
+def home():
+    amala_votes, afang_votes, amala_percent, afang_percent = get_vote_data()
+    return render_template("index.html",
+        amala_votes=amala_votes,
+        afang_votes=afang_votes,
+        amala_percent=amala_percent,
+        afang_percent=afang_percent
     )
 
-    afang_percent = (
-        round((afang_votes / total) * 100, 1)
-        if total > 0 else 0
-    )
 
-    return render_template(
-        "results.html",
+@app.route("/vote", methods=["POST"])
+def vote():
+    food_option = request.form["food_option"]
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO votes (food_option) VALUES (%s)", (food_option,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return redirect(url_for("home"))
+
+
+@app.route("/results")
+def results():
+    amala_votes, afang_votes, amala_percent, afang_percent = get_vote_data()
+    return render_template("results.html",
         amala_votes=amala_votes,
         afang_votes=afang_votes,
         amala_percent=amala_percent,
