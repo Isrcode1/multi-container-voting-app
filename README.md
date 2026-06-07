@@ -203,15 +203,12 @@ main        ← production (protected, CI/CD deploys from here)
 
 **Rule:** Always `git pull origin develop` before starting work. Open a PR to merge into `develop`. Team lead merges `develop` into `main`.
 
----
+--
 
-## 📸 Screenshots
 
-The app features:
-- A **Nigerian Food Battle** voting UI with food photos and animated vote bars
-- A **Live Results page** showing real vote counts and percentages
-- A dynamic **winner banner** that updates based on current votes
 
----
 
-*Built with ❤️ by the team as a DevOps capstone project*
+
+
+
+
